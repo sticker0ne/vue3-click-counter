@@ -5,7 +5,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      component: () => import("@/pages/IndexPage.vue"),
+      component: () => import("@/modules/counters/pages/IndexPage.vue"),
     },
   ],
 });

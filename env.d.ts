@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 interface ImportMetaEnv {
-  APP_HOST: "https://host.api.com";
+  APP_SUPABASE_URL: string;
+  APP_SUPABASE_ANON_KEY: string;
 }
 
 interface ImportMeta {
