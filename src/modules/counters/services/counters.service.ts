@@ -1,10 +1,14 @@
 import { createClient } from "@supabase/supabase-js";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import type { ICounterItem } from "@/modules/counters/services/counters.types";
 
 export function createCountersService(initPayload: { supabaseUrl: string; supabaseAnonKey: string }) {
   const client = createClient(initPayload.supabaseUrl, initPayload.supabaseAnonKey);
   const counters = ref<ICounterItem[]>([]);
+
+  const sortedCounters = computed(() => {
+    return counters.value.sort((a, b) => a.id - b.id);
+  });
 
   const onChange = (event: { record: ICounterItem }) => {
     const counter = counters.value.find(counter => counter.id === event.record.id);
@@ -31,6 +35,7 @@ export function createCountersService(initPayload: { supabaseUrl: string; supaba
     const currentCounter = counters.value.find(counter => counter.id === payload.id);
     if (!currentCounter) return;
 
+    // По странным стечениям обстоятельств без await не работает
     await client
       .from<ICounterItem>("counters")
       .update({ value: currentCounter.value + 1 })
@@ -48,7 +53,7 @@ export function createCountersService(initPayload: { supabaseUrl: string; supaba
       .eq("id", payload.id);
   }
 
-  return { counters, loadCounters, incrementCounter, decrementCounter };
+  return { counters, sortedCounters, loadCounters, incrementCounter, decrementCounter };
 }
 
 let service!: ReturnType<typeof createCountersService>;

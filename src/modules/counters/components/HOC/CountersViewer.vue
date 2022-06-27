@@ -2,7 +2,7 @@
   import { useCountersService } from "@/modules/counters/services/counters.service";
   import { onBeforeMount } from "vue";
 
-  const { loadCounters, counters, incrementCounter, decrementCounter } = useCountersService();
+  const { loadCounters, sortedCounters, incrementCounter, decrementCounter } = useCountersService();
 
   onBeforeMount(loadCounters);
 </script>
@@ -10,7 +10,7 @@
 <template>
   <div class="counter-viewer">
     <button
-      v-for="counter in counters"
+      v-for="counter in sortedCounters"
       :key="`counter-key-${counter.id}`"
       class="counter-item glow-on-hover"
       @click="incrementCounter({ id: counter.id })"
